@@ -14,7 +14,18 @@ module.exports = function(app){
         res.json(data);
     });
 
-    app.delete('/todo', function(req, res) {
-
+    app.delete('/todo/:item', function(req, res) {
+        console.log(req.params.item);
+        
+        // Filter on hauska metodi jonka avulla voi filteröidä nopeasti
+        // ja helposti kaikki arrayn alkiot ja poistaa ne arraysta jos
+        // kyseinen funktio palauttaa false.
+        data = data.filter(function(todo) {
+            // .replace() laittaa kaikkien välien tilalle hyphenin koska vain sitten
+            // sanoja kyetään vertailemaan koska selain palauttaa poistettavan sanan
+            // myös hyphenin kanssa.
+            return todo.item.replace(/ /g, '-') !== req.params.item;
+        });
+        res.json(data);
     });
 };
